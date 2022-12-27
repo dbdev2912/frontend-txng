@@ -1,0 +1,9 @@
+.navbar{
+    width: 300px;
+    background: $white;
+    box-shadow: $shadow;
+}
+
+.box-fit-nav-bar{
+    width: calc( 100vw - 300px );
+}

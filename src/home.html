@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title> Excel to Word </title>
+        <link rel="stylesheet" href="{% static 'css/index.css' %} ">
+        <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+        <meta id="csrf" csrf="{{ csrf_token }}" content="">
+    </head>
+    <body>
+        <!-- BODY -->
+        <div class="flex-box full-screen">
+            <div class="container" id="container">
+                <!-- INPUT SECTION -->
+                <div class="fake-btn flex-box box-fit flex-center hidden" id="chosing-file" style="display: none">
+                    <button class="input-file" >Choose file</button>
+                    <input class="hidden" type="file" name="" id="file-input" value="">
+                </div>
+                <!-- EXPORTER SECTION -->
+                <div class="box-fit" id="file-exporter">
+                    <div class="title-box flex-box" id="title-box">
+                        <div class="flex-child logo">
+                            <img src="{% static 'img/mylan_logo.png' %}" alt="">
+                            <span>Formulating a greener world</span>
+                        </div>
+                        <div class="flex-child flex-box flex-center" style="display:flex">
+                            <span class="title header-title">Auto-generating QR Software</span>
+                        </div>
+                        <div class="flex-child">
+
+                        </div>
+                    </div>
+                    <div class="flex-box flex-end relative" id="button-group" style="z-index: 2">
+                        <div class="flex-box value-preview">
+                            <div class="flex-child flex-box flex-center" id="index-preview" style="display: none">
+                                <span class="block">QR index: <b>Barcode</b> </span>
+                            </div>
+                            <div class="flex-child flex-box flex-center" id="label-preview" style="display: none">
+                                <span class="block">QR label: <b>Barcode</b> </span>
+                            </div>
+                            <div class="flex-child flex-box flex-center" id="value-preview" style="display: none">
+                                <span class="block">QR value: <b>Link</b> </span>
+                            </div>
+                        </div>
+                        <div class="flex-child button-container flex-box flex-center" style="display: flex;">
+                            <span id="file-name" class="block">Select a xlsx file please.</span>
+                        </div>
+                        <div class="flex-child button-container">
+                            <button type="button" name="button" id="fake-btn">Chose file</button>
+                        </div>
+                        <div class="flex-child button-container relative">
+                            <button type="button" name="button" id="drop-button" style="display: none;">Choose sheet</button>
+                            <div class="drop-box" id="drop-box" style="height: 0px;">
+                                <div class="items" id="drop-items">
+                                    <!-- <div class="item">
+                                        <span>Sheet1</span>
+                                    </div> -->
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-child button-container">
+                            <button type="button" name="button" id="submit" style="display: none;">Export</button>
+                        </div>
+                    </div>
+
+                    <div class="table-view relative" style="z-index: 1">
+                        <table class="table">
+                            <thead class="thead" id="table-head">
+
+                            </thead>
+                            <tbody class="tbody" id="table-body">
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="floating-context-menu" id="ctx-menu">
+            <div class="menu">
+                <div class="item" id="QRindex">
+                    <span>Set this field as index field</span>
+                </div>
+                <div class="item" id="QRvalue">
+                    <span>Set this field as QR value</span>
+                </div>
+                <div class="item" id="QRlabel">
+                    <span>Set this field as QR label</span>
+                </div>
+                <div class="item" id="unset" style="display: none">
+                    <span>Unset</span>
+                </div>
+                <div class="item" id="ctx-menu-close">
+                    <span>Close</span>
+                </div>
+            </div>
+            <!-- <div class="fake-bg box-fit" id="ctx-fake-bg"></div> -->
+        </div>
+
+        <div class="floating-context-menu full-screen flex-box flex-center export-confirm" id="confirm-box">
+            <div class="content-box">
+                <div class="header-content">
+                    <div class="content">
+                        <span>QR Label Field: <span id="label-field"></span> </span>
+                    </div>
+
+                    <div class="content">
+                        <span>QR Value Field: <span id="value-field"></span> </span>
+                    </div>
+                </div>
+
+                <div class="select-aspect">
+
+                    <div class="aspect" x="3" y="4" inches="2">
+                        <div class="icon-container">
+                            <div class="icon">
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="icon-label">
+                            <span>12 QR per page ( 3 x 4 )</span>
+                        </div>
+                    </div>
+
+                    <div class="aspect" x="2" y="3" inches="2.75">
+                        <div class="icon-container">
+                            <div class="icon">
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                        <div class="icon-label">
+                            <span>6 QR per page ( 2 x 3 )</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="index" state="false">
+                    <div class="icon-container">
+                        <div class="icon">
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                    <div class="icon-label">
+                        <span>Use filter to export specific rows</span>
+                    </div>
+                </div>
+                <div class="index-input">
+
+                    <div class="flex-box">
+                        <div class="flex-child flex-box">
+                            <div class="flex-child">
+                                <span>Criteria</span>
+                            </div>
+                            <div class="flex-child">
+                                <input id="start-index" type="text" name="" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <small>Sample syntax: 1;2-4;</small>
+                    <small>standalone numbers stands for a single row,</small>
+                    <small>numbers seperated by dash (-) stand for a linear list of rows.</small>
+                    <small>Leave blank to use default indexing ( from 1<sup>st</sup> to the end )</small>
+
+                </div>
+                <div class="input-field">
+                    <label for="">Export name:</label>
+                    <input type="text" id="export-file-name" placeholder="Leave blank to use auto-generated name" name="" value="">
+                </div>
+                <div class="button">
+                    <button type="button" id="submit-data">Generate File</button>
+                </div>
+                <a href="#" class="hidden" target="_blank" href="" id="download-link"></a>
+            </div>
+            <div class="fake-bg box-fit" id="fake-bg-content-box"></div>
+        </div>
+
+        <div class="floating-context-menu full-screen flex-box flex-center export-confirm" id="loading-screen">
+            <div class="content-box">
+                <div class="loading-box flex-box flex-center">
+                    <img src="{% static 'img/loading-circle.png' %}" alt="">
+                </div>
+                <div class="flex-box flex-center">
+                    <span style="display:block; font-size: 18px">Loading....</span>
+                </div>
+            </div>
+            <div class="fake-bg box-fit" id="fake-bg-loading-screen"></div>
+        </div>
+
+        <!-- SCRIPT -->
+            <!-- jquery -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+            <!-- xlsx cdn -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+            <!-- DOCX -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+            <!-- /SCRIPT -->
+
+        <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    </body>
+</html>

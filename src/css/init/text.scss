@@ -1,0 +1,54 @@
+
+.text-theme{
+    color: $theme-color;
+}
+
+.text-center{
+    display: block;
+    text-align: center;
+}
+
+.text-right{
+    display: block;
+    text-align: right;
+}
+.text-left{
+    display: block;
+    text-align: left;
+}
+
+.text-justify{
+    display: block;
+    text-align: justify;
+}
+
+
+.text-large{
+    font-size: 4em;
+}
+
+.text-big{
+    font-size: 3em;
+}
+
+.text-medium{
+    font-size: 2em;
+}
+
+.text-little-bigger{
+    font-size: 1.25em;
+}
+
+.text-small{
+    font-size: 0.8em;
+}
+
+
+
+.italic{
+    font-style: italic;
+}
+
+.text-pale{
+    color: $bg-pale-grey;
+}
