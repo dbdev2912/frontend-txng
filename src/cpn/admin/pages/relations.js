@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { dateFormat, dateStringFormat, auto_id } from '../../useful';
 import Navbar from '../cpn/navbar';
 
-import Field from './field';
+import Field from '../cpn/field';
 
 export default () => {
     let form = false;
@@ -56,13 +56,69 @@ export default () => {
 
     const editOrStatic = () => {
         setEditButton( !editButton )
+        if( editButton )
+            saveState();
     }
 
     const addField = () => {
         setCurrent( {...current, fields: [...current.fields, {...defaultField, id: auto_id() }]})
-        console.log(current)
     }
 
+    const updateFieldAtIndexOf = (index, field) => {
+        const newFieldsState = current.fields;
+        newFieldsState[index] = field;
+        let keys = [];
+        let foreign_keys = [];
+        for( let i = 0 ; i < current.fields.length; i++ ){
+            let field = current.fields[i];
+            if( field.is_primary ){
+                keys.push( field.name );
+            }
+
+            if( field.foreign_key )
+                foreign_keys.push( field.foreign_key );
+        }
+        setCurrent({...current, fields: newFieldsState, keys: keys, foreign_keys: foreign_keys })
+        saveState();
+    }
+
+
+    const saveState = () => {
+        const relation = relations.filter( rel => rel.id === current.id )[0];
+        const index = relations.indexOf( relation );
+        relations[index] = current;
+        console.log(current)
+        setRelations(relations);
+        saveRequest();
+    }
+
+    const saveRequest = () => {
+
+        fetch('/api/models/modify/table', {
+            method: "post",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({ table: current }),
+        }).then( res => res.json() ).then( (data) => {
+
+        })
+    }
+
+    const deleteRelation = (id) => {
+        const newRels = relations.filter( r => r.id !== id );
+
+        fetch('/api/models/delete/table', {
+            method: "post",
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify({ id })
+        }).then( res=> res.json() ).then(data => {
+            console.log(data);
+        })
+        setRelations( newRels );
+    }
 
     return(
         <div className="full-screen flex flex-no-wrap">
@@ -83,10 +139,11 @@ export default () => {
                             </thead>
                             <tbody id="relations">
                                 {relations.map( (r, index) =>
-                                    <tr className={r.id === current.id ? "hover theme-hightlight": "hover"} key={index} onClick={ ()=> { setRelation(index) } }>
+                                    <tr className={r.id === current.id ? "hover relative theme-hightlight": "hover relative"} key={r.id} onClick={ ()=> { setRelation(index) } }>
                                         <td className="pg-t-0-5 pg-l-0-5 pg-b-0-5 border-bottom-pale">{ r.name }</td>
                                         <td className="pg-t-0-5 pg-l-0-5 pg-b-0-5 border-bottom-pale">{ r.keys.join(', ') }</td>
                                         <td className="pg-t-0-5 pg-l-0-5 pg-b-0-5 border-bottom-pale">{ dateStringFormat(r.create_on) }</td>
+                                        <td className="absolute pos-unset t-0 r-0" onClick={ () => { deleteRelation(r.id) } }> <img src="/icon/close.png" className="icon mg-auto delete-icon"/> </td>
                                     </tr>
                                 )}
 
@@ -96,7 +153,7 @@ export default () => {
                 </div>
 
                 { current  ?
-                <div className="w-50 border-left-pale" >
+                <div className="w-50 border-left-pale no-scroll-x scroll-y" >
 
                     <div className="block w-100 pg-t-1 pg-t-0-5 pg-l-0.5 pg-r-0-5 pg-b-0-5 mg-r-1">
                         <div className="flex w-fit flex-no-wrap relative">
@@ -109,12 +166,19 @@ export default () => {
                         </div>
                     </div>
 
-                    { current.fields && current.fields.map( f =>
-                        <Field field = {f}/>
-                    )}
+                    { current.fields ?
+                        <React.StrictMode>
+                        {
+                            current.fields.map( (f, index) =>
+                                <Field field = {f} key = {f.id} index={index} updateFieldAtIndexOf = {updateFieldAtIndexOf} relations={relations} />
+                            )
+                        }
+                        </React.StrictMode>
+                        : null
+                    }
 
-                    <div className="add">
-                        <img src="/icon/add.png" className="icon block ml-auto mg-r-2" onClick={ addField }/>
+                    <div className="add w-80 mg-auto mg-t-2">
+                        <img src="/icon/add.png" className="icon block ml-auto" onClick={ addField }/>
                     </div>
                 </div>
                     : null

@@ -9,6 +9,10 @@
 
     &:hover{
         background: $bg-pale-theme;
+
+    }
+    .delete-icon{
+        display: block;
     }
 }
 
@@ -19,6 +23,14 @@
     transition: 0.25s ease-in;
 
     .drop-container{
-        
+
     }
+}
+
+.scroll-y{
+    overflow-y: scroll;
+}
+
+.no-scroll-x{
+    overflow-x: hidden;
 }

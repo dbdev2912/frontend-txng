@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Login from './portals/Login';
 import AdminHome from './admin/pages/home';
 import AdminRelations from './admin/pages/relations';
-
+import AdminForm from './admin/pages/form';
 import '../css/index.scss';
 
 function App() {
@@ -48,6 +48,12 @@ function App() {
                           </React.StrictMode>
                       }/>
 
+                      <Route exac path = '/form/:rel' element={
+                          <React.StrictMode>
+                              <AdminForm />
+                          </React.StrictMode>
+                      }/>
+
                       <Route exac path = '/signout' element={
                           <React.StrictMode>
                               <SignOut />
@@ -71,7 +77,7 @@ function App() {
 const SignOut = () => {
     useEffect(()=>{
         fetch('/api/signout').then(res => res.json()).then( (data) => {
-            
+
             window.location = '/';
 
         })

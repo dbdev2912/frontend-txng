@@ -18,6 +18,7 @@ button{
     background-color: $theme-color;
     color: $white;
     border: none;
+    cursor: pointer;
 }
 
 .input-outline{
@@ -33,4 +34,9 @@ button{
 
 .transparent{
     background: transparent;
+}
+
+.form-small{
+    width: 100%;
+    max-width: 488px;
 }
