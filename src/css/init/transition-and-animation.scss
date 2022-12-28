@@ -16,6 +16,12 @@
     }
 }
 
+.no-hover:hover{
+    background: $theme-color;
+    color: $white;
+    cursor: pointer;
+}
+
 
 .no-over-flow{
     height: 0;

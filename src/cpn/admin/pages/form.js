@@ -25,7 +25,20 @@ export default () => {
     }, []);
 
     const submit = () => {
-        console.log(data)
+        fetch(`/api/${rel}/add/data`, {
+            method: "post",
+            headers:{
+                "content-type":"application/json",
+            },
+            body: JSON.stringify({ data })
+        }).then(res => res.json()).then(data => {
+            const { success } = data;
+            if( success ){
+                alert( "Insert data successfully" );
+            }else{
+                alert( "Opps! Something wrong just happened!!" );
+            }
+        })
     }
 
     return (

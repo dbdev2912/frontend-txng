@@ -10,6 +10,7 @@ import Login from './portals/Login';
 import AdminHome from './admin/pages/home';
 import AdminRelations from './admin/pages/relations';
 import AdminForm from './admin/pages/form';
+import AdminTable from './admin/pages/table';
 import '../css/index.scss';
 
 function App() {
@@ -51,6 +52,11 @@ function App() {
                       <Route exac path = '/form/:rel' element={
                           <React.StrictMode>
                               <AdminForm />
+                          </React.StrictMode>
+                      }/>
+                      <Route exac path = '/table/:rel' element={
+                          <React.StrictMode>
+                              <AdminTable />
                           </React.StrictMode>
                       }/>
 
