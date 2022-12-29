@@ -23,10 +23,23 @@ const compareBy = (...props) => (a, b) => {
     return 0;
 };
 
+const generateMapKey = ( row, keys ) =>{
+    let key = "";
+    for( let i = 0; i < keys.length; i++ ){
+        key += row[keys[i]]
+    }
+    return key
+}
+
+const openTab = ( url ) => {
+    window.open(url, '_blank').focus();
+}
 
 export {
     dateFormat,
     dateStringFormat,
     auto_id,
-    compareBy
+    compareBy,
+    generateMapKey,
+    openTab,
 }

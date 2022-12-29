@@ -11,6 +11,9 @@ import AdminHome from './admin/pages/home';
 import AdminRelations from './admin/pages/relations';
 import AdminForm from './admin/pages/form';
 import AdminTable from './admin/pages/table';
+import AdminTables from './admin/pages/tables';
+import AdminForms from './admin/pages/forms';
+
 import '../css/index.scss';
 
 function App() {
@@ -46,6 +49,18 @@ function App() {
                       <Route exac path = '/relations' element={
                           <React.StrictMode>
                               <AdminRelations />
+                          </React.StrictMode>
+                      }/>
+
+                      <Route exac path = '/forms' element={
+                          <React.StrictMode>
+                            <AdminForms />
+                          </React.StrictMode>
+                      }/>
+
+                      <Route exac path = '/tables' element={
+                          <React.StrictMode>
+                              <AdminTables />
                           </React.StrictMode>
                       }/>
 

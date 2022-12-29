@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Navbar from '../cpn/navbar';
-import { compareBy } from '../../useful';
+import { compareBy, generateMapKey } from '../../useful';
 import React, { useState, useEffect } from 'react';
 
 export default () => {
@@ -32,23 +32,30 @@ export default () => {
     }, []);
 
     const dataRender = ( row, field ) => {
-        if( field.type.value === 'bool' ){
-            if( row[field.name] ){
-                return "true"
-            }
-            return "false"
+
+        const fk = foreign_keys.filter( key => key.on === field.name );
+        if( fk.length > 0 ){
+            let fk_data =  row.fk_data.filter( d => d.on = field.name )[0];
+            return fk_data[fk[0].on];
         }else{
-            if( row[field.name] ){
-                return row[field.name]
+            if( field.type.value === 'bool' ){
+                if( row[field.name] ){
+                    return "true"
+                }
+                return "false"
+            }else{
+                if( row[field.name] ){
+                    return row[field.name]
+                }
+                return "unknown"
             }
-            return "unknown"
         }
+
     }
 
     const reSorting = (field) =>{
         data.sort(( row1, row2 ) =>  row1[field] > row2[field] ? 1 : -1 );
-        console.log(data)
-        setData(data);
+        setData([...data]);
     }
 
     return (
@@ -69,12 +76,12 @@ export default () => {
                         </thead>
                         <tbody>
                         { data.length > 0 ?
-                            data.map( (row) =>                            
-                                <tr className="hover" key={ row["_id"] }>
+                            data.map( (row) =>
+                                <tr className="hover" key={  generateMapKey( row, keys )  }>
                                     { fields.length> 0 && fields.map( field =>
-                                        <React.StrictMode>
+                                        <React.StrictMode key={ field.id }>
                                             { field.is_visible ?
-                                                <td key={ field.id } className="pg-t-0-5 pg-l-0-5 pg-b-0-5 border-bottom-pale">{ dataRender(row, field) }</td> : null
+                                                <td className="pg-t-0-5 pg-l-0-5 pg-b-0-5 border-bottom-pale">{ dataRender(row, field) }</td> : null
                                              }
                                         </React.StrictMode>
 

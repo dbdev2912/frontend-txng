@@ -6,8 +6,8 @@ export default (props) => {
 
     const utils = [
         { id: 0, href: "/relations", label: "Relations", page: 0 },
-        { id: 1, href: "/", label: "Searching", page: 1 },
-        { id: 2, href: "/", label: "Sorting", page: 2 },
+        { id: 1, href: "/forms", label: "Forms", page: 1 },
+        { id: 2, href: "/tables", label: "Tables", page: 2 },
         { id: 3, href: "/signout", label: "Sign out", page: 3 },
     ]
 

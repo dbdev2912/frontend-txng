@@ -49,16 +49,16 @@ export default () => {
 
                 { fields.map( field =>
                     <div key={ field.id }>
-                        { field.data_type === 'int' ?
-                            <NumberInput setter={setData} field={ field } data={ data }/> : null }
-                        { field.data_type === 'text' ?
-                            <TextInput setter={setData} field={ field } data={ data }/> : null }
-                        { field.data_type === 'bool' ?
-                            <BoolInput setter={setData} field={ field } data={ data }/> : null }
-                        { field.data_type === 'date' ?
-                            <DateInput setter={setData} field={ field } data={ data }/> : null }
-                        { field.data_type === 'decimal' ?
-                            <DecimalInput setter={setData} field={ field } data={ data }/> : null }
+                        { field.type.value === 'int' ?
+                            <NumberInput setter={setData} field={ field } keys={keys} foreign_keys={ foreign_keys } data={ data }/> : null }
+                        { field.type.value === 'text' ?
+                            <TextInput setter={setData} field={ field } keys={keys} foreign_keys={ foreign_keys } data={ data }/> : null }
+                        { field.type.value === 'bool' ?
+                            <BoolInput setter={setData} field={ field } keys={keys} foreign_keys={ foreign_keys } data={ data }/> : null }
+                        { field.type.value === 'date' ?
+                            <DateInput setter={setData} field={ field } keys={keys} foreign_keys={ foreign_keys } data={ data }/> : null }
+                        { field.type.value === 'decimal' ?
+                            <DecimalInput setter={setData} field={ field } keys={keys} foreign_keys={ foreign_keys } data={ data }/> : null }
                     </div>
 
                 )}

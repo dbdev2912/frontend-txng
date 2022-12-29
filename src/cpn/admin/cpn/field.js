@@ -57,10 +57,18 @@ export default (props) => {
         setInnerDrop( !innerDrop )
     }
 
+    const setDataTypeNoDrop = (type) => {
+        setField({...field, type: type, data_type: type.value});
+
+    }
+
     const saveState = () => {
         setDrop( !drop )
         setHeight( 0 );
         updateFieldAtIndexOf(index, field);
+    }
+    const setFieldName = ( name ) => {
+        setField( {...field, name: name} )
     }
 
     return(
@@ -233,7 +241,12 @@ export default (props) => {
                                 <div className="absolute r-0 b-100 no-over-flow bg-white shadow" style={{ height: `${foreignKeyDropRefsHeight}px` }}>
                                    <div className="drop-container h-200 w-fit scroll-y" >
                                         { foreignKeyRelation.fields && foreignKeyRelation.fields.map( (rel, index) =>
-                                            <div key={rel.id} className="pg-t-0-5 pg-l-1 pg-b-0-5 drop-item hover border-bottom-pale flex flex-no-wrap bg-white" onClick={ ()=> { setForeignKeyRefs(rel); setField({ ...field, foreign_key: { ...field.foreign_key, on: rel.name } }) } }>
+                                            <div key={rel.id} className="pg-t-0-5 pg-l-1 pg-b-0-5 drop-item hover border-bottom-pale flex flex-no-wrap bg-white" onClick={ ()=> {
+
+                                                setForeignKeyRefs(rel);
+                                                setField({ ...field, foreign_key: { ...field.foreign_key, on: rel.name }, name: rel.name, type: rel.type });
+
+                                            }}>
                                                 <span className="block w-50">{rel.name}</span>
                                             </div>
                                         )}

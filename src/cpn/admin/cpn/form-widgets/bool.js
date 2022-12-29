@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export default ( props ) => {
 
-    const { field, setter, data } =  props;
+    const { field, setter, data, keys, foreign_keys } =  props;
 
     const [ checked, setChecked ] = useState( data[field.name] );
 
@@ -16,7 +16,7 @@ export default ( props ) => {
 
     return(
         <div className="w-80 mg-auto mg-t-1 form-small">
-            <label className="block text-little-bigger">{ field.name }</label>
+            <label className="block text-little-bigger">{ field.name } { field.is_primary ? <span className="text-theme">*</span>: null } </label>
             <div className="flex flex-no-wrap mg-t-1">
                 <div className="w-50">
                     <div className="w-fit flex flex-no-wrap">
